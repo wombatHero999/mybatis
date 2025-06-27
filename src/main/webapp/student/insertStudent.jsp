@@ -17,6 +17,12 @@ table#tbl-student th{text-align:right;}
 table#tbl-student td{text-align:left;}
 table#tbl-student tr:last-of-type td{text-align:center;}
 </style>
+<script>
+	<c:if test="${not empty msg}">
+		alert("${msg}")
+		<c:remove var="msg"/>
+	</c:if>
+</script>
 </head>
 <body>
 	<div class="enroll-container">

@@ -1,12 +1,16 @@
 package com.kh.mybatis.student.model.vo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Student {
 	private int no;
 	private String name;
 	private String tel;
 	private Date regDate; // java.util.Date
+	
+	private Student s;
+	private List<Student> arr;
 	
 	public Student() {
 		super();

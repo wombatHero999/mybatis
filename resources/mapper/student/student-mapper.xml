@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+	<!-- 
+		namespace : mapper파일의 고유한 별칭
+		
+		* mapper파일에서 사용 가능한 태그들
+		1. 쿼리문과 관련된 태그
+		 - DML문과 관련된 태그
+		 <insert id="각 쿼리문의 식별자" parameterType="전달받을자바타입혹은 별칭" ></insert>
+		 <update></update>
+		 <delete></delete>
+		 
+		 - DQL문과 관련된 태그
+		 <select id="식별자" parameterType="자바클래스" 
+		 resultType="조회결과를 자동매핑할 자바타입" 
+		 resultMap="조회결과를 뽑아서 매핑할 resultMap의 id">
+		 </select> 
+		 
+		 - DQL문에서는 resultType이나 ResultMap이 필수다.
+		 - DML문은 항상 처리한 행의 갯수를 반환하기 때문에 resultType을 작성하지 않는다.
+		 - 쿼리문을 실행하는데 필요한 데이터를 바인딩 할때는 #{필드명, 변수명, key값}사용
+		   하거나 ${필드명, 변수명, key값}을 사용
+		 
+		 resultMap태그  
+		  - ResultSet으로 조회된 컬럼값을 하나씩 뽑아서 내가 지정한 vo클래스의 각
+		    필드에 직접 데이터를 매핑하는 역할의 태그
+		    
+		 - 기본 생성자 호출후 setter메서드를 호출하여 데이터 바인딩
+		 <resultMap id="식별자" type="자바클래스명,별칭">
+		 	<id column="DB컬럼명" property="필드명" />
+		 	<result column="DB컬럼명" property="필드명" />
+		 	...
+		 	<collection property="필드명" resultMap="식별자" />
+		 	<association property="필드명" resultMap="식별자" />
+		 </resultMap>   
+		 
+		 - 생성자 방식의 데이터 바인딩
+		 <resultMap id="식별자" type="자바클래스,별칭">
+		 	<constructor>
+		 		<idArg />
+		 		<arg />
+		 	</constructor>
+		 </resultMap>
+	 -->
+	
+	<insert id="insertStudent" parameterType="student">
+		INSERT INTO STUDENT(NO, NAME, TEL)
+		VALUES (SEQ_STUDENT_NO.NEXTVAL, #{name} , #{tel} )
+	</insert>
+	
+	<insert id="insertStudentMap" parameterType="hashmap">
+		INSERT INTO STUDENT(NO, NAME, TEL)
+		VALUES (SEQ_STUDENT_NO.NEXTVAL, #{name} , #{tel} )
+	</insert>
+
+	<!-- 
+		resultSet을 mybatis가 자동으로 VO클래스로 매핑
+		1. 칼럼명과 동일한 이름의 필드의 setter메서드를 호출하여 값을 대입
+		2. 자동형변환처리
+		   varchar2, char -> String
+		   number -> int/double
+		   date -> java.util.date
+		
+		필드명 불일치시 해결방법
+		1. mybatis-config.xml의 setting속성에 mapUnderscoreToCamelCase를 true설정
+		2. 쿼리문에 별칭을 부여하여 해결할 수 있음
+		   EX) select reg_date AS "regDate"
+		3. resultMap을 이용   
+	 -->
+	<select id="selectOneStudent" parameterType="int" resultType="student">
+		SELECT 
+			*
+		  FROM STUDENT
+		 WHERE NO = #{no}
+	</select>
+	
+	<select id="selectStudentCount" resultType="int">
+		SELECT COUNT(*)
+		FROM STUDENT
+	</select>
+	
+	<update id="updateStudent" parameterType="student">
+		UPDATE STUDENT 
+		SET NAME = #{name},
+		    TEL = #{tel}
+		WHERE NO = #{no}
+	</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
